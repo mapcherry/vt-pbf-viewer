@@ -7,11 +7,13 @@
       <PbfViewer :pbf="pbfUrl" />
     </div>
     <div class="bottom">
-      {{title}} - Find the source code on
-      <a
-        href="https://github.com/MapDev-OSM/vt-pbf-viewer"
-      >GitHub</a>
-      © 2020 dorinoltean@MapDev
+      <div>
+        {{title}} - Find the source code on
+        <a
+          href="https://github.com/MapDev-OSM/vt-pbf-viewer"
+        >GitHub</a>
+        © 2020 dorinoltean@MapDev
+      </div>
     </div>
   </div>
 </template>
