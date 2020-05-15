@@ -1,7 +1,7 @@
 body {
   width: 100vw;
   height: 100vh;
-  margin: auto;
+  margin: 0;
   font-size: 16px;
   font-family: "Courier New", Courier, monospace;
 }
@@ -15,21 +15,31 @@ button {
 }
 
 #app {
+  height: 100%;
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 100%;
-  align-items: center;
+  align-items: stretch;
+  min-width: 400px;
 }
 
 #app .main {
   flex-grow: 1;
-  min-width: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #app .top,
 #app .bottom {
-  margin: 1.3rem;
+  padding: 1.3rem;
+  display: flex;
+  justify-content: center;
+}
+
+#app .top input {
+  width: 100%;
+
+  max-width: 800px;
 }
 
 .error {

@@ -1,6 +1,6 @@
 <template>
   <div v-if="error" class="error">{{error}}</div>
-  <canvas v-else ref="canvas" width="1124" height="1124"></canvas>
+  <canvas v-else ref="canvas"></canvas>
 </template>
 
 <script>
@@ -36,9 +36,9 @@ export default {
     },
     resetCanvas() {
       let parent = this.$refs["canvas"].parentElement;
-      let width = Math.min(parent.offsetWidth, parent.offsetHeight) - 4;
+      let width = Math.min(parent.offsetWidth, parent.offsetHeight);
       this.canvas = this.$refs["canvas"];
-      this.canvas.width = this.canvas.height = width;
+      this.canvas.width = this.canvas.height = width - 4;
       this.canvasCtx = this.canvas.getContext("2d");
       this.canvasCtx.setTransform(1, 0, 0, 1, 0, 0);
       this.canvasCtx.clearRect(0, 0, this.canvas.width, this.canvas.height);
