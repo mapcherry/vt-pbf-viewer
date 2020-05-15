@@ -1,0 +1,40 @@
+<template>
+  <div id="app">
+    <div class="top">
+      <input type="text" v-model="pbfUrl" />
+    </div>
+    <div class="main">
+      <PbfViewer :pbf="pbfUrl" />
+    </div>
+    <div class="bottom">
+      {{title}} - Find the source code on
+      <a
+        href="https://github.com/MapDev-OSM/vt-pbf-viewer"
+      >GitHub</a>
+      © 2020 dorinoltean@MapDev
+    </div>
+  </div>
+</template>
+
+<script>
+import PbfViewer from "./components/PbfViewer.vue";
+
+let defaultPbfUrl = process.env.BASE_URL + "data/1444.pbf";
+
+export default {
+  name: "App",
+
+  components: {
+    PbfViewer
+  },
+  data: function() {
+    return {
+      pbfUrl: defaultPbfUrl,
+      title: "Vector Tile PBF Viewer"
+    };
+  },
+  created: function() {
+    document.title = this.title + " - MapDev";
+  }
+};
+</script>
