@@ -4,7 +4,8 @@
       <input type="text" v-model="pbfUrl" />
     </div>
     <div class="main">
-      <PbfViewer :pbf="pbfUrl" />
+      <div v-if="error" class="error">{{error}}</div>
+      <PbfViewer v-else :pbf="pbfUrl" @error="onError" />
     </div>
     <div class="bottom">
       <div>
@@ -32,11 +33,22 @@ export default {
   data: function() {
     return {
       pbfUrl: defaultPbfUrl,
-      title: "Vector Tile PBF Viewer"
+      title: "Vector Tile PBF Viewer",
+      error: ""
     };
   },
   created: function() {
     document.title = this.title + " - MapDev";
+  },
+  watch: {
+    pbfUrl: function() {
+      this.error = "";
+    }
+  },
+  methods: {
+    onError(error) {
+      this.error = error;
+    }
   }
 };
 </script>

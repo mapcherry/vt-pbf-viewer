@@ -1,6 +1,5 @@
 <template>
-  <div v-if="error" class="error">{{error}}</div>
-  <canvas v-else ref="canvas"></canvas>
+  <canvas ref="canvas"></canvas>
 </template>
 
 <script>
@@ -14,25 +13,40 @@ export default {
     pbf: String
   },
   data: function() {
-    return { error: "", canvas: {}, canvasCtx: {} };
+    return { canvas: {}, canvasCtx: {}, vectorTile: null };
   },
   async mounted() {
-    await this.redraw();
+    await this.loadVectorTile();
+    this.redraw();
   },
   watch: {
     async pbf() {
-      this.error = "";
-      await this.$nextTick(); // wait for rerender of html
-      await this.redraw();
+      if (await this.loadVectorTile()) {
+        this.redraw();
+      }
     }
   },
   methods: {
-    async redraw() {
-      this.resetCanvas();
+    async loadVectorTile() {
       let buffer = await this.fetchPbfBuffer();
-      if (!buffer) return;
+      if (!buffer) return false;
+      try {
+        this.vectorTile = new vt.VectorTile(
+          new Protobuf(new Uint8Array(buffer))
+        );
+      } catch (error) {
+        this.$emit(
+          "error",
+          "Unsupported pbf format. Loading resulted in: " + error
+        );
 
-      this.drawPbf(buffer);
+        return false;
+      }
+      return true;
+    },
+    redraw() {
+      this.resetCanvas();
+      this.drawVectorTile();
     },
     resetCanvas() {
       let parent = this.$refs["canvas"].parentElement;
@@ -67,24 +81,18 @@ export default {
       this.canvasCtx.strokeStyle = style;
     },
 
-    drawPbf(arrayBuffer) {
-      try {
-        var tile = new vt.VectorTile(new Protobuf(new Uint8Array(arrayBuffer)));
-      } catch (error) {
-        this.error = "Unsupported pbf format. Loading resulted in: " + error;
-        return;
-      }
-      let keys = Object.keys(tile.layers);
+    drawVectorTile() {
+      let keys = Object.keys(this.vectorTile.layers);
       if (keys.length == 0) {
         console.warn("No layers found. Nothing to plot");
         return;
       }
 
-      let extent = tile.layers[keys[0]].extent;
+      let extent = this.vectorTile.layers[keys[0]].extent;
       this.setCanvasScale(extent);
 
       for (let key of keys) {
-        let layer = tile.layers[key];
+        let layer = this.vectorTile.layers[key];
 
         for (let i = 0; i < layer.length; i++) {
           let feature = layer.feature(i);
@@ -117,7 +125,7 @@ export default {
         let response = await fetch(this.pbf);
         return await response.arrayBuffer();
       } catch (ex) {
-        this.error = "Could not load pbf file: " + ex;
+        this.$emit("error", "Could not load pbf file: " + ex);
         return;
       }
     },
