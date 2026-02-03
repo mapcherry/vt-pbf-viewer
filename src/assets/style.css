@@ -1,7 +1,8 @@
 body {
-  width: 100vw;
+  /* width: 100vw; */
+  max-width: 1600px;
+  margin: auto;
   height: 100vh;
-  margin: 0;
   font-size: 16px;
   font-family: "Courier New", Courier, monospace;
 }
@@ -28,6 +29,32 @@ button {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+}
+
+.main .content {
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.canvas-container {
+  width: 100%;
+  min-height: 800px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.code-container {
+  width: 100%;
+  max-width: 100%;
+  white-space: pre-wrap;
+  text-wrap: wrap;
+  word-wrap: break-word;
 }
 
 #app .top,

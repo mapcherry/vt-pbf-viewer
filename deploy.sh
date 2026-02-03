@@ -17,7 +17,7 @@ git add -A
 git commit -m 'deploy'
 
 
-git push -f git@github.com:MapDev-OSM/vt-pbf-viewer.git master:gh-pages
+git push -f git@github.com:mapcherry/vt-pbf-viewer.git master:gh-pages
 
 
 cd -
